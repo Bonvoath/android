@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "851595689750",
+    "firebase_url": "https://tms365-dcfe8.firebaseio.com",
+    "project_id": "tms365-dcfe8",
+    "storage_bucket": "tms365-dcfe8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:851595689750:android:04da37e97b2a800e",
+        "android_client_info": {
+          "package_name": "com.example.bonvoath.tms"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "851595689750-hia8o9i3vpsoolj8gkmiictrr7bkj90m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeaIf5NpiZgbWcUnig7W4kxitHrWY9u3o"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

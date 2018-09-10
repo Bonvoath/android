@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="server_address">http://104.197.117.36/tms365/</string>
+    <string name="truck_login">api/v1/truck/getbynum</string>
+    <string name="truck_update">api/v1/Truck/Update</string>
+    <string name="order_get_by_truck">api/v1/order/get</string>
+</resources>

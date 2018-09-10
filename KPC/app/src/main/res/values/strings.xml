@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">ប្រព័ន្ធគ្រប់គ្រងមន្រ្តីរាជការ</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">កំពង់ចាម</string>
+    <string name="nav_header_subtitle">ប្រព័ន្ធគ្រប់គ្រងមន្រ្តីរាជការ</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="profile">ព័ត៌មានផ្ទាល់ខ្លួន</string>
+    <string name="label_officer_id">លេខសំគាល់ចំនួនមន្រ្តីរាជការ</string>
+    <string name="label_employee_id">អត្តលេខមន្ដ្រីរាជការ</string>
+    <string name="label_kh_education">កម្រិតវប្បធម៍</string>
+</resources>
