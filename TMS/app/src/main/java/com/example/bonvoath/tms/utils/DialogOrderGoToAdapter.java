@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.bonvoath.tms.Entities.DataSet;
 import com.example.bonvoath.tms.Entities.OrderMaster;
 import com.example.bonvoath.tms.R;
 
@@ -20,11 +21,9 @@ public class DialogOrderGoToAdapter extends RecyclerView.Adapter<DialogOrderGoTo
         void OnItemClick(View view, int positionId);
     }
     private static final String TAG = "DialogOrderGoToAdapter";
-    private ArrayList<OrderMaster> mOrderMasters;
     private Context mContext;
 
-    public DialogOrderGoToAdapter(Context context, ArrayList<OrderMaster> orderMasters){
-        mOrderMasters = orderMasters;
+    public DialogOrderGoToAdapter(Context context){
         mContext = context;
     }
     @NonNull
@@ -45,7 +44,7 @@ public class DialogOrderGoToAdapter extends RecyclerView.Adapter<DialogOrderGoTo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        OrderMaster order = mOrderMasters.get(position);
+        OrderMaster order = DataSet.OrderMasters.get(position);
         holder.txt_order_num.setText(order.getOrderNumber());
         holder.txt_order_date.setText(order.getOrderDate());
         holder.txt_order_address.setText(order.getAddress());
@@ -53,7 +52,7 @@ public class DialogOrderGoToAdapter extends RecyclerView.Adapter<DialogOrderGoTo
 
     @Override
     public int getItemCount() {
-        return mOrderMasters.size();
+        return DataSet.OrderMasters.size();
     }
 
     public void setOnItemClickListener(DialogOrderGoToAdapter.OnItemClickListener onItemClickListener){

@@ -4,6 +4,8 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,12 +16,14 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -27,6 +31,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.bonvoath.tms.Entities.DataSet;
 import com.example.bonvoath.tms.Entities.OrderMaster;
 import com.example.bonvoath.tms.utils.DialogOrderGoToMap;
 import com.example.bonvoath.tms.utils.OrderMapInfoDetail;
@@ -45,6 +50,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.maps.android.ui.IconGenerator;
+import com.otaliastudios.autocomplete.Autocomplete;
+import com.otaliastudios.autocomplete.AutocompleteCallback;
+import com.otaliastudios.autocomplete.AutocompletePolicy;
+import com.otaliastudios.autocomplete.AutocompletePresenter;
+import com.otaliastudios.autocomplete.CharPolicy;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -59,19 +69,18 @@ public class MainActivity extends AppCompatActivity
         OnMapReadyCallback,
         GoogleMap.OnMarkerClickListener,
         DialogOrderGoToMap.OnDialogItemClick{
-
+    Toolbar toolbar;
     FusedLocationProviderClient mFusedLocationProviderClient;
     GoogleMap mMap;
     SharedPreferences mSharedPreferences;
 
     private static final float DEFAULT_ZOOM = 16f;
-    private ArrayList<OrderMaster> mOrderNums = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mSharedPreferences = getApplicationContext().getSharedPreferences("Auth", MODE_PRIVATE);
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
@@ -107,17 +116,39 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+        MenuItem menuItem = menu.findItem(R.id.action_search);
+        searchView = (android.support.v7.widget.SearchView)menuItem.getActionView();
+        EditText editText = searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        setupUserAutocomplete(editText);
+        searchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toolbar.setNavigationIcon(null);
+                searchView.setMaxWidth(Integer.MAX_VALUE);
+                /*
+                DialogOrderGoToMap dialogOrderGoToMap = new DialogOrderGoToMap();
+                dialogOrderGoToMap.setCancelable(false);
+                dialogOrderGoToMap.setOnDialogItemClick(MainActivity.this);
+                dialogOrderGoToMap.show(getSupportFragmentManager(), getClass().getName());
+                */
+            }
+        });
+
+        searchView.setOnCloseListener(new android.support.v7.widget.SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                toolbar.setNavigationIcon(R.drawable.ic_dehaze_white_24dp);
+                return false;
+            }
+        });
+
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
+        //int id = item.getItemId();
 
         return super.onOptionsItemSelected(item);
     }
@@ -126,6 +157,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+        if(item == null)
+            return false;
+
         int id = item.getItemId();
 
         if (id == R.id.nav_my_location) {
@@ -175,7 +209,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void OnItemClick(View view, int positionId) {
-        OrderMaster order = mOrderNums.get(positionId);
+        OrderMaster order = DataSet.OrderMasters.get(positionId);
         LatLng latLng = new LatLng(order.getLat(),order.getLng());
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM));
     }
@@ -216,6 +250,7 @@ public class MainActivity extends AppCompatActivity
 
     private void orderData()
     {
+        DataSet.OrderMasters = new ArrayList<>();
         String url = TMSLib.getUrl(this, R.string.order_get_by_truck);
         String key = mSharedPreferences.getString("TruckNumber", "");
         Map<String, Object> params = new HashMap<>();
@@ -226,7 +261,7 @@ public class MainActivity extends AppCompatActivity
                 try
                 {
                     boolean isError = response.getBoolean("IsError");
-                    if(isError == false){
+                    if(!isError){
                         JSONArray data = response.getJSONArray("Data");
                         for(int i=0;i<data.length(); i++){
                             JSONObject obj = (JSONObject) data.get(i);
@@ -238,10 +273,12 @@ public class MainActivity extends AppCompatActivity
                             String num = obj.getString("OrderNum");
                             String date = obj.getString("OrderDate");
                             String address = obj.getString("Address");
+                            String remark =(obj.isNull("Remark")?"#remark":obj.getString("Remark"));
                             OrderMaster order = new OrderMaster(num, date, address);
                             order.setLat(lat);
                             order.setLong(lng);
-                            mOrderNums.add(order);
+                            order.setRemark(remark);
+                            DataSet.OrderMasters.add(order);
                         }
                     }
                 }catch (JSONException e){
@@ -259,25 +296,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void initializeComponent(){
-        btnSearch = findViewById(R.id.btn_search);
-        btnRefresh = findViewById(R.id.btn_refresh);
-        btnSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogOrderGoToMap dialogOrderGoToMap = new DialogOrderGoToMap();
-                dialogOrderGoToMap.setOrderDataList(mOrderNums);
-                dialogOrderGoToMap.setCancelable(false);
-                dialogOrderGoToMap.setOnDialogItemClick(MainActivity.this);
-                dialogOrderGoToMap.show(getSupportFragmentManager(), getClass().getName());
-            }
-        });
-
-        btnRefresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Refresh order", Toast.LENGTH_LONG).show();
-            }
-        });
     }
     private void addMarker(String price, JSONObject data, LatLng latLng){
         MarkerOptions options = new MarkerOptions();
@@ -289,6 +307,33 @@ public class MainActivity extends AppCompatActivity
         mMap.addMarker(options).setTag(data);
         //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM));
     }
-    ImageButton btnSearch;
-    ImageButton btnRefresh;
+
+    private void setupUserAutocomplete(EditText edit) {
+        float elevation = 6f;
+        AutocompletePolicy policy = new CharPolicy('#');
+        Drawable backgroundDrawable = new ColorDrawable(getResources().getColor(R.color.colorGray));
+        AutocompletePresenter<OrderMaster> presenter = new com.khl.bonvoath.sample.OrderPresenter(this);
+        AutocompleteCallback<OrderMaster> callback = new AutocompleteCallback<OrderMaster>() {
+            @Override
+            public boolean onPopupItemClicked(Editable editable, OrderMaster item) {
+                editable.clear();
+                editable.append(item.getRemark());
+                LatLng latLng = new LatLng(item.getLat(),item.getLng());
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM));
+                return true;
+            }
+
+            public void onPopupVisibilityChanged(boolean shown) {}
+        };
+
+        Autocomplete.<OrderMaster>on(edit)
+                .with(elevation)
+                .with(backgroundDrawable)
+                .with(presenter)
+                .with(policy)
+                .with(callback)
+                .build();
+    }
+
+    SearchView searchView;
 }

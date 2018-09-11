@@ -24,13 +24,12 @@ public class DialogOrderGoToMap extends DialogFragment implements
         void OnItemClick(View view, int positionId);
     }
     private OnDialogItemClick mDialogItemClick;
-    private ArrayList<OrderMaster> mOrderNums = new ArrayList<>();
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View mView = inflater.inflate(R.layout.dialog_order_list_item, container, false);
         uRecyclerView = mView.findViewById(R.id.list_order_item);
-        DialogOrderGoToAdapter adapter = new DialogOrderGoToAdapter(getActivity(), mOrderNums);
+        DialogOrderGoToAdapter adapter = new DialogOrderGoToAdapter(getActivity());
         uRecyclerView.setAdapter(adapter);
         uRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter.setOnItemClickListener(this);
@@ -62,10 +61,6 @@ public class DialogOrderGoToMap extends DialogFragment implements
 
     public void setOnDialogItemClick(DialogOrderGoToMap.OnDialogItemClick onDialogOrderGoToMap){
         mDialogItemClick = onDialogOrderGoToMap;
-    }
-
-    public void setOrderDataList(ArrayList<OrderMaster> orderNums){
-        mOrderNums = orderNums;
     }
 
     RecyclerView uRecyclerView;

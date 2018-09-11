@@ -27,6 +27,10 @@ public class OrderMaster {
 
     public double getLng(){return  _lng;}
 
+    public String getRemark() {
+        return _remark;
+    }
+
     public void setLat(double lat){
         _lat = lat;
     }
@@ -35,9 +39,14 @@ public class OrderMaster {
         _lng = lng;
     }
 
+    public  void setRemark(String remark){
+        _remark = remark;
+    }
+
     private String _orderNum;
     private String _orderDate;
     private String _address;
     private double _lat;
     private double _lng;
+    private String _remark;
 }
