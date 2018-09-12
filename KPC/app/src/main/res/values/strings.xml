@@ -9,7 +9,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
+    <string name="label_kh_home">ទំព័រដើម</string>
     <string name="profile">ព័ត៌មានផ្ទាល់ខ្លួន</string>
     <string name="label_officer_id">លេខសំគាល់ចំនួនមន្រ្តីរាជការ</string>
     <string name="label_employee_id">អត្តលេខមន្ដ្រីរាជការ</string>
@@ -18,4 +18,22 @@
     <string name="label_edu_2">-កម្រិតបណ្ដុះបណ្ដាលមុខវិជ្ជាជីវៈមូលដ្ឋាន និងក្រោយមូលដ្ឋាន</string>
     <string name="label_edu_3">-ចំណេះដឹងភាសាបរទេស</string>
     <string name="label_edu_4">-ការបណ្ដុះបណ្ដាល និងវគ្គសិក្សាកំពុងបន្ដ (ត្រូវបំពេញវគ្គសិក្សាដែលថ្មីៗសំខាន់ និងចាំបាច់)</string>
+    <string name="label_kh_experience">ប្រវត្តិការងារ</string>
+    <string name="label_kh_exp_1">ថ្ងៃចូលបំរើការងារក្នុងក្របខណ្ឌរដ្ឋ</string>
+    <string name="label_kh_exp_2">ថ្ងៃចូលកាន់មុខតំណែងបច្ចុប្បន្ន </string>
+    <string name="label_kh_exp_3">អង្គភាព</string>
+    <string name="label_kh_exp_4">ប្រភេទក្របខ័ណ្ឌ</string>
+    <string name="label_kh_exp_5">មុខតំណែងបច្ចុប្បន្ន</string>
+    <string name="label_kh_exp_6">បទពិសោធន៍ការងារជាមួយក្រសួងមហាផ្ទៃ/រដ្ឋបាលថ្នាក់ក្រោមជាតិ</string>
+    <string name="label_kh_exp_7">បទពិសោធន៍ការងារជាមួយវិស័យរដ្ឋផ្សេងៗ</string>
+    <string name="label_kh_exp_8">បទពិសោធន៍ការងារជាមួយវិស័យឯកជន ឬអង្កការក្រៅរដ្ឋាភិបាលនានា</string>
+    <string name="label_class_and_level">class and level</string>
+    <string name="label_from_date_to_date">from date to date</string>
+    <string name="label_organization">organization</string>
+    <string name="label_penalty">ការដាក់ពិន័យ</string>
+    <string name="label_motivation">ការលើងទឹកចិត្ត</string>
+    <string name="label_couple">ព័ត៌មានប្ដីឬក៏ប្រពន្ធ</string>
+    <string name="label_child">ព័ត៌មានកូន</string>
+    <string name="label_parent">ព័ត៌មានរបស់ឪពុកម្ដាយ</string>
+    <string name="label_reference">ព័ត៌មានរបស់អ្នកដឹងលឺ</string>
 </resources>

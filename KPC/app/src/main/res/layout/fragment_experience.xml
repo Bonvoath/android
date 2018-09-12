@@ -1,14 +1,179 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ExperienceFragment">
+    android:orientation="vertical"
+    android:padding="5dp">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
-
-</FrameLayout>
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/shape_panel_color_gray_2"
+        android:orientation="vertical"
+        android:padding="5dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp">
+            <TextView
+                android:layout_width="168dp"
+                android:layout_height="match_parent"
+                android:text="@string/label_kh_exp_1"
+                android:fontFamily="@font/khm1"
+                android:textSize="11sp" />
+            <TextView
+                android:id="@+id/txtJoin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/kbat"
+                android:textSize="12sp"
+                android:text="០១-១០-២០០៧"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:background="@drawable/shape_border_top">
+            <TextView
+                android:layout_width="168dp"
+                android:layout_height="match_parent"
+                android:text="@string/label_kh_exp_2"
+                android:fontFamily="@font/khm1"
+                android:textSize="11sp" />
+            <TextView
+                android:id="@+id/txtEnd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/kbat"
+                android:textSize="12sp"
+                android:text="២០-១២-២០១៩"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:background="@drawable/shape_border_top">
+            <TextView
+                android:layout_width="168dp"
+                android:layout_height="match_parent"
+                android:text="@string/label_kh_exp_5"
+                android:fontFamily="@font/khm1"
+                android:textSize="11sp" />
+            <TextView
+                android:id="@+id/txtJob"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/kbat"
+                android:textSize="12sp"
+                android:text="ប្រធានអង្គភាពច្រកចេញចូលតែមួយ"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:background="@drawable/shape_border_top">
+            <TextView
+                android:layout_width="168dp"
+                android:layout_height="match_parent"
+                android:text="@string/label_kh_exp_3"
+                android:fontFamily="@font/khm1"
+                android:textSize="11sp" />
+            <TextView
+                android:id="@+id/txtOrg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/kbat"
+                android:textSize="12sp"
+                android:text="អង្គភាពច្រកចេញចូលតែមួយសាលាខេត្តកំពង់ចាម"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp">
+            <TextView
+                android:layout_width="168dp"
+                android:layout_height="match_parent"
+                android:text="@string/label_kh_exp_4"
+                android:fontFamily="@font/khm1"
+                android:textSize="12sp" />
+            <TextView
+                android:id="@+id/txtLevel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/kbat"
+                android:textSize="12sp"
+                android:text="មន្ត្រីរដ្ឋបាលជាន់ខ្ពស់ ឋានន្តរស័ក្តិ អនុមន្ត្រី ថ្នាក់លេខ​​ ១ ឆ្នា ២០១៨"/>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/shape_panel_color_gray_2">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/khm1"
+            android:text="@string/label_kh_exp_6"
+            android:textSize="12sp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:textColor="@color/color_icon_2" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/exp_list_type_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/shape_panel_color_gray_2">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/khm1"
+            android:text="@string/label_kh_exp_7"
+            android:textSize="12sp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:textColor="@color/color_icon_2" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/exp_list_type_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/shape_panel_color_gray_2">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/khm1"
+            android:text="@string/label_kh_exp_8"
+            android:textSize="12sp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:textColor="@color/color_icon_2" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/exp_list_type_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+</LinearLayout>
