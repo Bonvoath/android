@@ -14,4 +14,8 @@
     <string name="label_officer_id">លេខសំគាល់ចំនួនមន្រ្តីរាជការ</string>
     <string name="label_employee_id">អត្តលេខមន្ដ្រីរាជការ</string>
     <string name="label_kh_education">កម្រិតវប្បធម៍</string>
+    <string name="label_edu_1">-កម្រិតវប្បធម៌ទូទៅ (បំពេញយកតែចុងក្រោយ )</string>
+    <string name="label_edu_2">-កម្រិតបណ្ដុះបណ្ដាលមុខវិជ្ជាជីវៈមូលដ្ឋាន និងក្រោយមូលដ្ឋាន</string>
+    <string name="label_edu_3">-ចំណេះដឹងភាសាបរទេស</string>
+    <string name="label_edu_4">-ការបណ្ដុះបណ្ដាល និងវគ្គសិក្សាកំពុងបន្ដ (ត្រូវបំពេញវគ្គសិក្សាដែលថ្មីៗសំខាន់ និងចាំបាច់)</string>
 </resources>

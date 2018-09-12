@@ -126,12 +126,6 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View v) {
                 toolbar.setNavigationIcon(null);
                 searchView.setMaxWidth(Integer.MAX_VALUE);
-                /*
-                DialogOrderGoToMap dialogOrderGoToMap = new DialogOrderGoToMap();
-                dialogOrderGoToMap.setCancelable(false);
-                dialogOrderGoToMap.setOnDialogItemClick(MainActivity.this);
-                dialogOrderGoToMap.show(getSupportFragmentManager(), getClass().getName());
-                */
             }
         });
 
@@ -273,7 +267,7 @@ public class MainActivity extends AppCompatActivity
                             String num = obj.getString("OrderNum");
                             String date = obj.getString("OrderDate");
                             String address = obj.getString("Address");
-                            String remark =(obj.isNull("Remark")?"#remark":obj.getString("Remark"));
+                            String remark =(obj.isNull("Remark")?"":obj.getString("Remark"));
                             OrderMaster order = new OrderMaster(num, date, address);
                             order.setLat(lat);
                             order.setLong(lng);
@@ -305,7 +299,6 @@ public class MainActivity extends AppCompatActivity
         options.anchor(iconFactory.getAnchorU(), iconFactory.getAnchorV());
         options.position(latLng);
         mMap.addMarker(options).setTag(data);
-        //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM));
     }
 
     private void setupUserAutocomplete(EditText edit) {
