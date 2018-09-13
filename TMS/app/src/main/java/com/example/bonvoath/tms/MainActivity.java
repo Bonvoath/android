@@ -62,6 +62,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity
@@ -74,6 +75,7 @@ public class MainActivity extends AppCompatActivity
     GoogleMap mMap;
     SharedPreferences mSharedPreferences;
 
+    List<Marker> markerList = new ArrayList<>();
     private static final float DEFAULT_ZOOM = 16f;
 
     @Override
@@ -133,6 +135,14 @@ public class MainActivity extends AppCompatActivity
             @Override
             public boolean onClose() {
                 toolbar.setNavigationIcon(R.drawable.ic_dehaze_white_24dp);
+                /*
+                for(int i=0;i<DataSet.OrderMasters.size();i++){
+                    OrderMaster order = DataSet.OrderMasters.get(i);
+                    LatLng latLng = new LatLng(order.getLat(),order.getLng());
+                    addMarker(order, latLng);
+                }
+                */
+                mMap.clear();
                 return false;
             }
         });
@@ -194,7 +204,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onMarkerClick(Marker marker) {
         OrderMapInfoDetail dialog = new OrderMapInfoDetail();
-        dialog.setData((JSONObject) marker.getTag());
+        dialog.setData((OrderMaster)marker.getTag());
         dialog.setCancelable(false);
         dialog.show(getSupportFragmentManager(), getClass().getName());
 
@@ -261,17 +271,20 @@ public class MainActivity extends AppCompatActivity
                             JSONObject obj = (JSONObject) data.get(i);
                             double lat = obj.getDouble("Lat");
                             double lng = obj.getDouble("Long");
+                            String name = obj.getString("Name");
                             String price = obj.getString("Price");
                             LatLng latLng = new LatLng(lat, lng);
-                            addMarker(price,obj, latLng);
                             String num = obj.getString("OrderNum");
                             String date = obj.getString("OrderDate");
                             String address = obj.getString("Address");
                             String remark =(obj.isNull("Remark")?"":obj.getString("Remark"));
                             OrderMaster order = new OrderMaster(num, date, address);
                             order.setLat(lat);
+                            order.setName(name);
                             order.setLong(lng);
                             order.setRemark(remark);
+                            order.setPrice(price);
+                            addMarker(order, latLng);
                             DataSet.OrderMasters.add(order);
                         }
                     }
@@ -291,14 +304,16 @@ public class MainActivity extends AppCompatActivity
 
     private void initializeComponent(){
     }
-    private void addMarker(String price, JSONObject data, LatLng latLng){
+    private void addMarker(OrderMaster data, LatLng latLng){
         MarkerOptions options = new MarkerOptions();
         IconGenerator iconFactory = new IconGenerator(this);
         iconFactory.setStyle(IconGenerator.STYLE_BLUE);
-        options.icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(price)));
+        options.icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(data.getPrice())));
         options.anchor(iconFactory.getAnchorU(), iconFactory.getAnchorV());
         options.position(latLng);
-        mMap.addMarker(options).setTag(data);
+        Marker marker = mMap.addMarker(options);
+        marker.setTag(data);
+        markerList.add(marker);
     }
 
     private void setupUserAutocomplete(EditText edit) {
@@ -311,8 +326,10 @@ public class MainActivity extends AppCompatActivity
             public boolean onPopupItemClicked(Editable editable, OrderMaster item) {
                 editable.clear();
                 editable.append(item.getRemark());
+                mMap.clear();
                 LatLng latLng = new LatLng(item.getLat(),item.getLng());
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM));
+                addMarker(item, latLng);
                 return true;
             }
 

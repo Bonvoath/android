@@ -11,13 +11,14 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.bonvoath.tms.Entities.OrderMaster;
 import com.example.bonvoath.tms.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class OrderMapInfoDetail extends DialogFragment {
-    JSONObject mOrder;
+    OrderMaster mOrder;
     String TAG = "OrderMapInfoDetail";
     @Nullable
     @Override
@@ -28,17 +29,10 @@ public class OrderMapInfoDetail extends DialogFragment {
         txtPrice = mView.findViewById(R.id.txtPrice);
         txtRemark = mView.findViewById(R.id.txtRemark);
         btnClose = mView.findViewById(R.id.btnClose);
-        if(mOrder != null){
-            try{
-                txtName.setText(mOrder.getString("Name"));
-                txtNum.setText(mOrder.getString("OrderNum"));
-                txtPrice.setText(mOrder.getString("Price"));
-                if(!mOrder.isNull("Remark"))
-                    txtRemark.setText(mOrder.getString("Remark"));
-            }catch (JSONException e){
-                Log.e(TAG, e.getMessage());
-            }
-        }
+        txtName.setText(mOrder.getName());
+        txtNum.setText(mOrder.getOrderNumber());
+        txtPrice.setText(mOrder.getPrice());
+        txtRemark.setText(mOrder.getRemark());
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,7 +51,7 @@ public class OrderMapInfoDetail extends DialogFragment {
                 getDialog().getWindow().setWindowAnimations(R.style.DialogMapInfo);
     }
 
-    public void setData(JSONObject order){
+    public void setData(OrderMaster order){
         mOrder = order;
     }
 

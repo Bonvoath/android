@@ -43,10 +43,28 @@ public class OrderMaster {
         _remark = remark;
     }
 
+    public String getPrice() {
+        return _price;
+    }
+
+    public void setPrice(String price) {
+        this._price = price;
+    }
+
+    public String getName() {
+        return _name;
+    }
+
+    public void setName(String name) {
+        this._name = name;
+    }
+
     private String _orderNum;
     private String _orderDate;
     private String _address;
     private double _lat;
     private double _lng;
+    private String _price;
     private String _remark;
+    private String _name;
 }
