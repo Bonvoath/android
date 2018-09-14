@@ -13,7 +13,7 @@ import com.khl.bonvoath.kpc.entities.Experience;
 import java.util.List;
 
 public class ExperienceRecycleAdapter extends RecyclerView.Adapter<ExperienceRecycleAdapter.Holder> {
-    List<Experience> data;
+    private List<Experience> data;
     @NonNull
     @Override
     public ExperienceRecycleAdapter.Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

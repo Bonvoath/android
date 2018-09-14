@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity
         Fragment mFragment = null;
         if(id == R.id.nav_home) {
             mFragment = new HomeFragment();
-            title = getResources().getString(R.string.label_kh_home);
+            title = getResources().getString(R.string.app_name);
         }else if (id == R.id.nav_profile) {
             mFragment = new FragmentProfile();
             title = getResources().getString(R.string.profile);
@@ -116,5 +116,6 @@ public class MainActivity extends AppCompatActivity
 
     private void initializeComponent(){
         fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.fragmentContainer, new HomeFragment(), TAG).commit();
     }
 }
