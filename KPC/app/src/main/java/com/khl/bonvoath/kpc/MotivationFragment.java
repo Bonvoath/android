@@ -32,6 +32,10 @@ public class MotivationFragment extends Fragment {
         data.add(new Motivation("អនុក្រ.តត ៣៨៦","៣១-០៣-២០១៦","រាជរដ្ឋាភិបាល","មេដាយមាស","ឥស្សយសការងារ"));
         data.add(new Motivation("អនុក្រ.តត ៣៨៦","៣១-០៣-២០១៦","រាជរដ្ឋាភិបាល","មេដាយមាស","ឥស្សយសការងារ"));
         data.add(new Motivation("អនុក្រ.តត ៣៨៦","៣១-០៣-២០១៦","រាជរដ្ឋាភិបាល","មេដាយមាស","ឥស្សយសការងារ"));
+        data.add(new Motivation("អនុក្រ.តត ៣៨៦","៣១-០៣-២០១៦","រាជរដ្ឋាភិបាល","មេដាយមាស","ឥស្សយសការងារ"));
+        data.add(new Motivation("អនុក្រ.តត ៣៨៦","៣១-០៣-២០១៦","រាជរដ្ឋាភិបាល","មេដាយមាស","ឥស្សយសការងារ"));
+        data.add(new Motivation("អនុក្រ.តត ៣៨៦","៣១-០៣-២០១៦","រាជរដ្ឋាភិបាល","មេដាយមាស","ឥស្សយសការងារ"));
+        data.add(new Motivation("អនុក្រ.តត ៣៨៦","៣១-០៣-២០១៦","រាជរដ្ឋាភិបាល","មេដាយមាស","ឥស្សយសការងារ"));
         motivationRecycleList = view.findViewById(R.id.motivation_recycle_list);
         motivationRecycleList.setNestedScrollingEnabled(false);
         MotivationRecycleAdapter adapter = new MotivationRecycleAdapter();

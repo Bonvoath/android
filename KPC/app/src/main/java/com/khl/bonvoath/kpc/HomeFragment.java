@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.khl.bonvoath.kpc.entities.GridMenu;
@@ -14,6 +15,10 @@ import com.khl.bonvoath.kpc.utils.HomeGridAdapter;
 import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
+    public interface OnHomeFragmentListener{
+        void onClickGridViewItem(int position);
+    }
+    OnHomeFragmentListener mOnHomeFragmentListener;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -25,19 +30,28 @@ public class HomeFragment extends Fragment {
 
     private void initializeComponent(View view){
         DataSet.menus = new ArrayList<>();
-        DataSet.menus.add(new GridMenu(R.drawable.ic_home_cc0000_24dp, getResources().getString(R.string.label_kh_home)));
         DataSet.menus.add(new GridMenu(R.drawable.ic_people_outline_cc0000_24dp, getResources().getString(R.string.profile)));
         DataSet.menus.add(new GridMenu(R.drawable.ic_graduation_cap_cc0000_24dp,getResources().getString(R.string.label_kh_education)));
         DataSet.menus.add(new GridMenu(R.drawable.ic_tasks_cc0000_24dp,getResources().getString(R.string.label_kh_experience)));
         DataSet.menus.add(new GridMenu(R.drawable.ic_gift_solid_cc0000_24dp,getResources().getString(R.string.label_motivation)));
         DataSet.menus.add(new GridMenu(R.drawable.ic_notifications_off_cc0000_24dp,getResources().getString(R.string.label_penalty)));
-        DataSet.menus.add(new GridMenu(R.drawable.ic_group_add_cc0000_24dp,getResources().getString(R.string.label_couple)));
-        DataSet.menus.add(new GridMenu(R.drawable.ic_child_solid_cc0000_24dp,getResources().getString(R.string.label_child)));
+        DataSet.menus.add(new GridMenu(R.drawable.ic_group_add_cc0000_24dp,getResources().getString(R.string.label_family)));
         DataSet.menus.add(new GridMenu(R.drawable.ic_people_outline_cc0000_24dp,getResources().getString(R.string.label_parent)));
         DataSet.menus.add(new GridMenu(R.drawable.ic_hearing_cc0000_24dp,getResources().getString(R.string.label_reference)));
         mGridView = view.findViewById(R.id.grid_view_home);
         mGridView.setVerticalScrollBarEnabled(false);
         mGridView.setAdapter(new HomeGridAdapter(getContext(), DataSet.menus));
+
+        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                mOnHomeFragmentListener.onClickGridViewItem(position);
+            }
+        });
+    }
+
+    public void  setmOnHomeFragmentListener(OnHomeFragmentListener onHomeFragmentListener){
+        mOnHomeFragmentListener = onHomeFragmentListener;
     }
 
     GridView mGridView;

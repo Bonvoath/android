@@ -24,8 +24,7 @@ public class OrderViewAdapter extends RecyclerView.Adapter<OrderViewAdapter.View
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         OrderMaster order = DataSet.OrderMasters.get(position);
         holder.txt_order_num.setText(order.getOrderNumber());
-        holder.txt_order_date.setText(order.getOrderDate());
-        holder.txt_order_address.setText(order.getAddress());
+        holder.txt_order_date.setText(order.getRemark());
     }
 
     @Override
@@ -39,9 +38,8 @@ public class OrderViewAdapter extends RecyclerView.Adapter<OrderViewAdapter.View
         TextView txt_order_address;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            txt_order_num = itemView.findViewById(R.id.txt_order_num);
-            txt_order_date = itemView.findViewById(R.id.txt_order_date);
-            txt_order_address= itemView.findViewById(R.id.txt_order_address);
+            txt_order_num = itemView.findViewById(R.id.txtTag);
+            txt_order_date = itemView.findViewById(R.id.txtRemark);
         }
     }
 }

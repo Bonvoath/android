@@ -36,4 +36,17 @@
     <string name="label_child">ព័ត៌មានកូន</string>
     <string name="label_parent">ព័ត៌មានរបស់ឪពុកម្ដាយ</string>
     <string name="label_reference">ព័ត៌មានរបស់អ្នកដឹងលឺ</string>
+    <string name="label_family">ព័ត៌មានគ្រួសារ</string>
+    <string name="label_name">ឈ្មោះ</string>
+    <string name="label_date_of_birth">ថ្ងៃខែឆ្នាំកំណើត</string>
+    <string name="label_job">មុខរបរ</string>
+    <string name="label_sex">ភេទ</string>
+    <string name="label_info_father">ព័ត៍មានឪពុក</string>
+    <string name="label_info_mother">ព័ត៍មានម្តាយ</string>
+    <string name="label_live_status">ស្ថានភាពរស់នៅ</string>
+    <string name="label_place_of_birth">ទីកន្លែងកំណើត</string>
+    <string name="label_ref_one">អ្នកដឹងឮទីមួយ</string>
+    <string name="label_ref_two">អ្នកដឹងឮទីពីរ</string>
+    <string name="label_phone">លេខទូរស័ព្ទ</string>
+    <string name="label_permanent_address">អាស័យដ្ឋានអចិន្រ្ដៃយ៏បច្ចុប្បន្ន</string>
 </resources>

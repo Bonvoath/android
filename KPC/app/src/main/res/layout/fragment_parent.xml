@@ -1,14 +1,250 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ParentFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="5dp"
+    android:background="@color/color_gray_1">
+    <LinearLayout
+        android:id="@+id/row_1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:background="@drawable/shape_panel_color_gray_2">
+        <TextView
+            android:layout_width="wrap_content"
+            app:fontFamily="@font/khm1"
+            android:textSize="@dimen/fx11sp"
+            android:textColor="@color/color_icon_2"
+            android:padding="5dp"
+            android:layout_height="match_parent" android:text="@string/label_info_father" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="5dp"
+            android:background="@drawable/shape_border_top">
 
-</FrameLayout>
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                app:fontFamily="@font/khm1"
+                android:textSize="@dimen/fx11sp"
+                android:text="@string/label_name"/>
+            <TextView
+                android:id="@+id/txt_father_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:text="តឹក ឈាង"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="5dp"
+            android:background="@drawable/shape_border_top">
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                app:fontFamily="@font/khm1"
+                android:textSize="@dimen/fx11sp"
+                android:text="@string/label_date_of_birth"/>
+            <TextView
+                android:id="@+id/txt_dob_father"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:text="01-02-1953 "/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="5dp"
+            android:background="@drawable/shape_border_top">
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                app:fontFamily="@font/khm1"
+                android:textSize="@dimen/fx11sp"
+                android:text="@string/label_job"/>
+            <TextView
+                android:id="@+id/txt_father_job"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:text="ជរា"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:orientation="horizontal"
+            android:background="@drawable/shape_border_top">
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                app:fontFamily="@font/khm1"
+                android:textSize="@dimen/fx11sp"
+                android:text="@string/label_place_of_birth"/>
+            <TextView
+                android:id="@+id/txt_father_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:text="ជ្រោយសសិត   ឃុំ-សង្កាត់   ពាមប្រធ្នោះ   ក្រុង-ស្រុក-ខ័ណ្ឌ   កោះសូទិន   រាជធានី-ខេត្ត   កំពង់ចាម"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="5dp"
+            android:background="@drawable/shape_border_top">
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                app:fontFamily="@font/khm1"
+                android:textSize="@dimen/fx11sp"
+                android:text="@string/label_live_status"/>
+            <TextView
+                android:id="@+id/txt_father_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:text="រស់"/>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/row_1"
+        android:padding="8dp"
+        android:orientation="vertical"
+        android:background="@drawable/shape_panel_color_gray_2">
+        <TextView
+            android:layout_width="wrap_content"
+            app:fontFamily="@font/khm1"
+            android:textSize="@dimen/fx11sp"
+            android:textColor="@color/color_icon_2"
+            android:layout_height="match_parent" android:padding="5dp"
+            android:text="@string/label_info_mother" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="5dp"
+            android:background="@drawable/shape_border_top">
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                app:fontFamily="@font/khm1"
+                android:textSize="@dimen/fx11sp"
+                android:text="@string/label_name"/>
+            <TextView
+                android:id="@+id/txt_mother_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:text="នាង អ៊ាម"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="5dp"
+            android:background="@drawable/shape_border_top">
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                app:fontFamily="@font/khm1"
+                android:textSize="@dimen/fx11sp"
+                android:text="@string/label_date_of_birth"/>
+            <TextView
+                android:id="@+id/txt_mother_dob"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:text="30-01-1960"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:orientation="horizontal"
+            android:background="@drawable/shape_border_top">
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                app:fontFamily="@font/khm1"
+                android:textSize="@dimen/fx11sp"
+                android:text="@string/label_job"/>
+            <TextView
+                android:id="@+id/txt_mother_job"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:text="ជរា"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:orientation="horizontal"
+            android:background="@drawable/shape_border_top">
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                app:fontFamily="@font/khm1"
+                android:textSize="@dimen/fx11sp"
+                android:text="@string/label_place_of_birth"/>
+            <TextView
+                android:id="@+id/txt_mother_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:text="ព្រែកគល់   ឃុំ-សង្កាត់   ល្វេ   ក្រុង-ស្រុក-ខ័ណ្ឌ   កោះសូទិន   រាជធានី-ខេត្ដ   កំពង់ចាម"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="5dp"
+            android:background="@drawable/shape_border_top">
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                app:fontFamily="@font/khm1"
+                android:textSize="@dimen/fx11sp"
+                android:text="@string/label_live_status"/>
+            <TextView
+                android:id="@+id/txt_mother_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:text="រស់"/>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

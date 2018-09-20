@@ -74,9 +74,9 @@
 
         <TextView
             android:layout_width="100dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:fontFamily="@font/khm1"
-            android:text="រូមភាព"
+            android:text="រូបភាព"
             android:textSize="11sp" />
 
         <TextView
@@ -95,7 +95,7 @@
 
         <TextView
             android:layout_width="100dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:fontFamily="@font/khm1"
             android:text="ខ្លឹមសារ"
             android:textSize="11sp" />

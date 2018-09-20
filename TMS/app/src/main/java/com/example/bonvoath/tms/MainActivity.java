@@ -35,6 +35,7 @@ import com.example.bonvoath.tms.Entities.DataSet;
 import com.example.bonvoath.tms.Entities.OrderMaster;
 import com.example.bonvoath.tms.utils.DialogOrderGoToMap;
 import com.example.bonvoath.tms.utils.OrderMapInfoDetail;
+import com.example.bonvoath.tms.utils.OrderPresenter;
 import com.example.bonvoath.tms.utils.TMSLib;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -62,7 +63,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity
@@ -75,8 +75,7 @@ public class MainActivity extends AppCompatActivity
     GoogleMap mMap;
     SharedPreferences mSharedPreferences;
 
-    List<Marker> markerList = new ArrayList<>();
-    private static final float DEFAULT_ZOOM = 16f;
+    private static final float DEFAULT_ZOOM = 10f;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,18 +130,36 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mMap.clear();
+                for(OrderMaster order: DataSet.OrderMasters){
+                    if(order.getRemark() != null && !order.getRemark().equals("")) {
+                        if(order.getRemark().toLowerCase().contains(newText.toLowerCase())) {
+                            LatLng latLng = new LatLng(order.getLat(), order.getLng());
+                            addMarker(order, latLng);
+                        }
+                    }
+                }
+                return false;
+            }
+        });
+
         searchView.setOnCloseListener(new android.support.v7.widget.SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
                 toolbar.setNavigationIcon(R.drawable.ic_dehaze_white_24dp);
-                /*
-                for(int i=0;i<DataSet.OrderMasters.size();i++){
-                    OrderMaster order = DataSet.OrderMasters.get(i);
-                    LatLng latLng = new LatLng(order.getLat(),order.getLng());
+                mMap.clear();
+                for(OrderMaster order: DataSet.OrderMasters){
+                    LatLng latLng = new LatLng(order.getLat(), order.getLng());
                     addMarker(order, latLng);
                 }
-                */
-                mMap.clear();
                 return false;
             }
         });
@@ -152,18 +169,12 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        //int id = item.getItemId();
-
         return super.onOptionsItemSelected(item);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        if(item == null)
-            return false;
-
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
         if (id == R.id.nav_my_location) {
@@ -311,16 +322,14 @@ public class MainActivity extends AppCompatActivity
         options.icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(data.getPrice())));
         options.anchor(iconFactory.getAnchorU(), iconFactory.getAnchorV());
         options.position(latLng);
-        Marker marker = mMap.addMarker(options);
-        marker.setTag(data);
-        markerList.add(marker);
+        mMap.addMarker(options).setTag(data);
     }
 
     private void setupUserAutocomplete(EditText edit) {
         float elevation = 6f;
         AutocompletePolicy policy = new CharPolicy('#');
         Drawable backgroundDrawable = new ColorDrawable(getResources().getColor(R.color.colorGray));
-        AutocompletePresenter<OrderMaster> presenter = new com.khl.bonvoath.sample.OrderPresenter(this);
+        final AutocompletePresenter<OrderMaster> presenter = new OrderPresenter(this);
         AutocompleteCallback<OrderMaster> callback = new AutocompleteCallback<OrderMaster>() {
             @Override
             public boolean onPopupItemClicked(Editable editable, OrderMaster item) {
@@ -333,7 +342,9 @@ public class MainActivity extends AppCompatActivity
                 return true;
             }
 
-            public void onPopupVisibilityChanged(boolean shown) {}
+            public void onPopupVisibilityChanged(boolean shown) {
+
+            }
         };
 
         Autocomplete.<OrderMaster>on(edit)

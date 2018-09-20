@@ -10,6 +10,10 @@ public class OrderMaster {
         _address = address;
     }
 
+    public String getTag() {
+        return tag;
+    }
+
     public String getOrderNumber()
     {
         return  _orderNum;
@@ -59,6 +63,10 @@ public class OrderMaster {
         this._name = name;
     }
 
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
     private String _orderNum;
     private String _orderDate;
     private String _address;
@@ -67,4 +75,5 @@ public class OrderMaster {
     private String _price;
     private String _remark;
     private String _name;
+    private String tag;
 }

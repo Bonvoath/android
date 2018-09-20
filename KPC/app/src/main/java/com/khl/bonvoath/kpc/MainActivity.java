@@ -11,9 +11,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        HomeFragment.OnHomeFragmentListener {
     String TAG = "MainActivity";
     FragmentManager fragmentManager;
     DrawerLayout drawer;
@@ -71,44 +73,24 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         drawer.closeDrawer(GravityCompat.START);
         int id = item.getItemId();
-        String title = "";
-        Fragment mFragment = null;
         if(id == R.id.nav_home) {
-            mFragment = new HomeFragment();
-            title = getResources().getString(R.string.app_name);
+            loadHomeFragment();
         }else if (id == R.id.nav_profile) {
-            mFragment = new FragmentProfile();
-            title = getResources().getString(R.string.profile);
+            loadFragment(new FragmentProfile(), R.string.profile);
         } else if (id == R.id.nav_education) {
-            mFragment = new EducationFragment();
-            title = getResources().getString(R.string.label_kh_education);
+            loadFragment(new EducationFragment(), R.string.label_kh_education);
         } else if(id == R.id.nav_experience){
-            mFragment = new ExperienceFragment();
-            title = getResources().getString(R.string.label_kh_experience);
+            loadFragment(new ExperienceFragment(), R.string.label_kh_experience);
         }else if(id == R.id.nav_gift){
-            mFragment = new MotivationFragment();
-            title = getResources().getString(R.string.label_motivation);
+            loadFragment(new MotivationFragment(), R.string.label_motivation);
         }else if(id == R.id.nav_warning){
-            mFragment = new PenaltyFragment();
-            title = getResources().getString(R.string.label_penalty);
+            loadFragment(new PenaltyFragment(), R.string.label_penalty);
         }else if(id == R.id.nav_couple){
-            mFragment = new CoupleFragment();
-            title = getResources().getString(R.string.label_couple);
-        }else if(id == R.id.nav_child){
-            mFragment = new ChildFragment();
-            title = getResources().getString(R.string.label_child);
+            loadFragment(new FamilyFragment(), R.string.label_family);
         }else if(id == R.id.nav_parent){
-            mFragment = new ParentFragment();
-            title = getResources().getString(R.string.label_parent);
+            loadFragment(new ParentFragment(), R.string.label_parent);
         }else if(id == R.id.nav_ref){
-            mFragment = new ReferenceFragment();
-            title = getResources().getString(R.string.label_reference);
-        }
-
-        if(mFragment != null) {
-            if(getSupportActionBar() != null)
-                getSupportActionBar().setTitle(title);
-            fragmentManager.beginTransaction().replace(R.id.fragmentContainer, mFragment, TAG).commit();
+            loadFragment(new ReferenceFragment(), R.string.label_reference);
         }
 
         return true;
@@ -116,6 +98,39 @@ public class MainActivity extends AppCompatActivity
 
     private void initializeComponent(){
         fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.fragmentContainer, new HomeFragment(), TAG).commit();
+        loadHomeFragment();
+    }
+
+    @Override
+    public void onClickGridViewItem(int position) {
+        if(position == 0)
+            loadFragment(new FragmentProfile(), R.string.profile);
+        else if (position == 1) {
+            loadFragment(new EducationFragment(), R.string.label_kh_education);
+        } else if(position == 2){
+            loadFragment(new ExperienceFragment(), R.string.label_kh_experience);
+        }else if(position == 3){
+            loadFragment(new MotivationFragment(), R.string.label_motivation);
+        }else if(position == 4){
+            loadFragment(new PenaltyFragment(), R.string.label_penalty);
+        }else if(position == 5){
+            loadFragment(new FamilyFragment(), R.string.label_family);
+        }else if(position == 6){
+            loadFragment(new ParentFragment(), R.string.label_parent);
+        }else if(position == 7){
+            loadFragment(new ReferenceFragment(), R.string.label_reference);
+        }
+    }
+
+    private void loadHomeFragment(){
+        HomeFragment home =new HomeFragment();
+        home.setmOnHomeFragmentListener(this);
+        loadFragment(home, R.string.label_kh_home);
+    }
+
+    private void loadFragment(Fragment fragment, int title){
+        if(getSupportActionBar() != null)
+            getSupportActionBar().setTitle(title);
+        fragmentManager.beginTransaction().replace(R.id.fragmentContainer, fragment, TAG).commit();
     }
 }

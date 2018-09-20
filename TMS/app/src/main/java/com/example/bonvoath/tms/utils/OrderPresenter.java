@@ -1,4 +1,4 @@
-package com.khl.bonvoath.sample;
+package com.example.bonvoath.tms.utils;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -21,7 +21,7 @@ import java.util.List;
 
 public class OrderPresenter extends RecyclerViewPresenter<OrderMaster> {
 
-    Adapter adapter;
+    private Adapter adapter;
 
     public OrderPresenter(Context context) {
         super(context);
@@ -44,19 +44,17 @@ public class OrderPresenter extends RecyclerViewPresenter<OrderMaster> {
     @Override
     protected void onQuery(@Nullable CharSequence query) {
         List<OrderMaster> all = DataSet.OrderMasters;
-        if (TextUtils.isEmpty(query)) {
-            adapter.setData(all);
-        } else {
-            query = query.toString().toLowerCase();
-            List<OrderMaster> list = new ArrayList<>();
-            for (OrderMaster u : all) {
-                if (u.getRemark().toLowerCase().contains(query)) {
+        List<OrderMaster> list = new ArrayList<>();
+        for (OrderMaster u : all) {
+            if(u.getRemark() != null && !u.getRemark().equals("")) {
+                String hash = "#" + query;
+                if (u.getRemark().toLowerCase().contains(hash)) {
+                    u.setTag(hash);
                     list.add(u);
                 }
             }
-            adapter.setData(list);
-            Log.e("UserPresenter", "found "+list.size()+" users for query "+query);
         }
+        adapter.setData(list);
         adapter.notifyDataSetChanged();
     }
 
@@ -66,15 +64,13 @@ public class OrderPresenter extends RecyclerViewPresenter<OrderMaster> {
 
         class Holder extends RecyclerView.ViewHolder {
             View root;
-            TextView txt_order_num;
-            TextView txt_order_date;
-            TextView txt_order_address;
+            TextView txtTag;
+            TextView txtRemark;
             Holder(@NonNull View itemView) {
                 super(itemView);
                 root = itemView;
-                txt_order_num = itemView.findViewById(R.id.txt_order_num);
-                txt_order_date = itemView.findViewById(R.id.txt_order_date);
-                txt_order_address= itemView.findViewById(R.id.txt_order_address);
+                txtRemark = itemView.findViewById(R.id.txtRemark);
+                txtTag = itemView.findViewById(R.id.txtTag);
             }
         }
 
@@ -87,8 +83,9 @@ public class OrderPresenter extends RecyclerViewPresenter<OrderMaster> {
             return (isEmpty()) ? 1 : data.size();
         }
 
+        @NonNull
         @Override
-        public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public Holder onCreateViewHolder(@Nullable ViewGroup parent, int viewType) {
             return new Holder(LayoutInflater.from(getContext()).inflate(R.layout.content_order_list_item, parent, false));
         }
 
@@ -97,24 +94,37 @@ public class OrderPresenter extends RecyclerViewPresenter<OrderMaster> {
         }
 
         @Override
-        public void onBindViewHolder(Holder holder, int position) {
-            if (isEmpty()) {
-                holder.txt_order_num.setText("No order here!");
-                holder.txt_order_date.setText("Sorry!");
-                holder.txt_order_address.setText("Please try again.");
-                holder.root.setOnClickListener(null);
+        public void onBindViewHolder(@NonNull Holder holder, int position) {
+            if(isEmpty()){
                 return;
             }
+
             final OrderMaster order = data.get(position);
-            holder.txt_order_num.setText(order.getOrderNumber());
-            holder.txt_order_date.setText(order.getOrderDate());
-            holder.txt_order_address.setText(order.getRemark());
+            holder.txtTag.setText(getHashTag(order));
+            holder.txtRemark.setText(order.getRemark());
             holder.root.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     dispatchClick(order);
                 }
             });
+        }
+
+        private String getHashTag(OrderMaster order){
+            String remark = order.getRemark();
+            String query = order.getTag();
+            String ret = "";
+            if(!remark.equals("") && query != null) {
+                String[] words = remark.split(" ");
+                for (int i = 0; i < words.length ; i++) {
+                    String word = words[i].toLowerCase();
+                    if(word.contains(query)){
+                        ret = word;
+                    }
+                }
+            }
+
+            return ret;
         }
     }
 }

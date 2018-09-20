@@ -25,18 +25,5 @@ public class ParentFragment extends Fragment {
     }
 
     private void initializeComponent(View view){
-        List<Penalty> data = new ArrayList<>();
-        data.add(new Penalty("អនុក្រ.តត ៣៨៦","៣១-០៣-២០១៦","រាជរដ្ឋាភិបាល","មេដាយមាស","ឥស្សយសការងារ"));
-        data.add(new Penalty("អនុក្រ.តត ៣៨៦","៣១-០៣-២០១៦","រាជរដ្ឋាភិបាល","មេដាយមាស","ឥស្សយសការងារ"));
-        data.add(new Penalty("អនុក្រ.តត ៣៨៦","៣១-០៣-២០១៦","រាជរដ្ឋាភិបាល","មេដាយមាស","ឥស្សយសការងារ"));
-        data.add(new Penalty("អនុក្រ.តត ៣៨៦","៣១-០៣-២០១៦","រាជរដ្ឋាភិបាល","មេដាយមាស","ឥស្សយសការងារ"));
-        motivationRecycleList = view.findViewById(R.id.penalty_recycle_list);
-        motivationRecycleList.setNestedScrollingEnabled(false);
-        PenaltyRecycleAdapter adapter = new PenaltyRecycleAdapter();
-        adapter.setData(data);
-        motivationRecycleList.setAdapter(adapter);
-        motivationRecycleList.setLayoutManager(new LinearLayoutManager(getContext()));
     }
-
-    RecyclerView motivationRecycleList;
 }

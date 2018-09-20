@@ -65,9 +65,9 @@ public class DialogOrderGoToAdapter extends RecyclerView.Adapter<DialogOrderGoTo
         TextView txt_order_address;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            txt_order_num = itemView.findViewById(R.id.txt_order_num);
-            txt_order_date = itemView.findViewById(R.id.txt_order_date);
-            txt_order_address= itemView.findViewById(R.id.txt_order_address);
+            txt_order_num = itemView.findViewById(R.id.txtTag);
+            txt_order_date = itemView.findViewById(R.id.txtRemark);
+            //txt_order_address= itemView.findViewById(R.id.txt_order_address);
         }
     }
 }
