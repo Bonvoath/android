@@ -35,7 +35,6 @@ public class OrderViewAdapter extends RecyclerView.Adapter<OrderViewAdapter.View
     public class ViewHolder extends RecyclerView.ViewHolder{
         TextView txt_order_num;
         TextView txt_order_date;
-        TextView txt_order_address;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             txt_order_num = itemView.findViewById(R.id.txtTag);

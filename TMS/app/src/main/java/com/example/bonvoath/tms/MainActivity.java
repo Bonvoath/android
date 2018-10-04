@@ -33,6 +33,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.bonvoath.tms.Entities.DataSet;
 import com.example.bonvoath.tms.Entities.OrderMaster;
+import com.example.bonvoath.tms.Entities.OrderSearch;
 import com.example.bonvoath.tms.utils.DialogOrderGoToMap;
 import com.example.bonvoath.tms.utils.OrderMapInfoDetail;
 import com.example.bonvoath.tms.utils.OrderPresenter;
@@ -53,9 +54,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.maps.android.ui.IconGenerator;
 import com.otaliastudios.autocomplete.Autocomplete;
 import com.otaliastudios.autocomplete.AutocompleteCallback;
-import com.otaliastudios.autocomplete.AutocompletePolicy;
 import com.otaliastudios.autocomplete.AutocompletePresenter;
-import com.otaliastudios.autocomplete.CharPolicy;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -68,8 +67,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         OnMapReadyCallback,
-        GoogleMap.OnMarkerClickListener,
-        DialogOrderGoToMap.OnDialogItemClick{
+        GoogleMap.OnMarkerClickListener{
     Toolbar toolbar;
     FusedLocationProviderClient mFusedLocationProviderClient;
     GoogleMap mMap;
@@ -139,6 +137,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public boolean onQueryTextChange(String newText) {
                 mMap.clear();
+                /*
                 for(OrderMaster order: DataSet.OrderMasters){
                     if(order.getRemark() != null && !order.getRemark().equals("")) {
                         if(order.getRemark().toLowerCase().contains(newText.toLowerCase())) {
@@ -147,6 +146,7 @@ public class MainActivity extends AppCompatActivity
                         }
                     }
                 }
+                */
                 return false;
             }
         });
@@ -156,10 +156,7 @@ public class MainActivity extends AppCompatActivity
             public boolean onClose() {
                 toolbar.setNavigationIcon(R.drawable.ic_dehaze_white_24dp);
                 mMap.clear();
-                for(OrderMaster order: DataSet.OrderMasters){
-                    LatLng latLng = new LatLng(order.getLat(), order.getLng());
-                    addMarker(order, latLng);
-                }
+
                 return false;
             }
         });
@@ -218,15 +215,7 @@ public class MainActivity extends AppCompatActivity
         dialog.setData((OrderMaster)marker.getTag());
         dialog.setCancelable(false);
         dialog.show(getSupportFragmentManager(), getClass().getName());
-
         return true;
-    }
-
-    @Override
-    public void OnItemClick(View view, int positionId) {
-        OrderMaster order = DataSet.OrderMasters.get(positionId);
-        LatLng latLng = new LatLng(order.getLat(),order.getLng());
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM));
     }
 
     public void onLocationChanged(Location location) {
@@ -236,7 +225,8 @@ public class MainActivity extends AppCompatActivity
 
     private void initGoogleMap() {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        if(mapFragment != null)
+            mapFragment.getMapAsync(this);
     }
 
     private void getDeviceLocation() {
@@ -296,7 +286,6 @@ public class MainActivity extends AppCompatActivity
                             order.setRemark(remark);
                             order.setPrice(price);
                             addMarker(order, latLng);
-                            DataSet.OrderMasters.add(order);
                         }
                     }
                 }catch (JSONException e){
@@ -323,22 +312,25 @@ public class MainActivity extends AppCompatActivity
         options.anchor(iconFactory.getAnchorU(), iconFactory.getAnchorV());
         options.position(latLng);
         mMap.addMarker(options).setTag(data);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM));
     }
 
     private void setupUserAutocomplete(EditText edit) {
         float elevation = 6f;
-        AutocompletePolicy policy = new CharPolicy('#');
+        //AutocompletePolicy policy = new CharPolicy(this);
         Drawable backgroundDrawable = new ColorDrawable(getResources().getColor(R.color.colorGray));
-        final AutocompletePresenter<OrderMaster> presenter = new OrderPresenter(this);
-        AutocompleteCallback<OrderMaster> callback = new AutocompleteCallback<OrderMaster>() {
+        final AutocompletePresenter<OrderSearch> presenter = new OrderPresenter(this);
+        AutocompleteCallback<OrderSearch> callback = new AutocompleteCallback<OrderSearch>() {
             @Override
-            public boolean onPopupItemClicked(Editable editable, OrderMaster item) {
+            public boolean onPopupItemClicked(Editable editable, OrderSearch item) {
                 editable.clear();
-                editable.append(item.getRemark());
+                editable.append(item.getTag());
                 mMap.clear();
-                LatLng latLng = new LatLng(item.getLat(),item.getLng());
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM));
-                addMarker(item, latLng);
+                DialogOrderGoToMap dialogOrderGoToMap = new DialogOrderGoToMap();
+                dialogOrderGoToMap.setData(getApplicationContext(), item.getOrders(), mSharedPreferences.getString("TruckNumber", ""));
+                dialogOrderGoToMap.setCancelable(false);
+                dialogOrderGoToMap.show(getSupportFragmentManager(), getClass().getName());
+
                 return true;
             }
 
@@ -347,11 +339,10 @@ public class MainActivity extends AppCompatActivity
             }
         };
 
-        Autocomplete.<OrderMaster>on(edit)
+        Autocomplete.<OrderSearch>on(edit)
                 .with(elevation)
                 .with(backgroundDrawable)
                 .with(presenter)
-                .with(policy)
                 .with(callback)
                 .build();
     }

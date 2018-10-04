@@ -4,4 +4,7 @@
     <string name="truck_login">api/v1/truck/getbynum</string>
     <string name="truck_update">api/v1/Truck/Update</string>
     <string name="order_get_by_truck">api/v1/order/get</string>
+    <string name="order_get_by_tag">api/v1/order/GetByTag</string>
+    <string name="assign_order_truck">api/v1/truck/assign</string>
+    <string name="get_order_image_by_order_number">api/v1/order/image</string>
 </resources>

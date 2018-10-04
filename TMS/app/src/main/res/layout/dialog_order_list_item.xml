@@ -36,4 +36,13 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/row1"
         android:background="@color/colorLightGray"/>
+    <Button
+        android:id="@+id/btn_assign"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/list_order_item"
+        android:background="@drawable/btn_default"
+        android:layout_margin="10dp"
+        android:textColor="@color/colorPrimary"
+        android:text="@string/assign_to_truck" />
 </RelativeLayout>
