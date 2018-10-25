@@ -35,7 +35,7 @@ import com.example.bonvoath.tms.Entities.DataSet;
 import com.example.bonvoath.tms.Entities.OrderMaster;
 import com.example.bonvoath.tms.Entities.OrderSearch;
 import com.example.bonvoath.tms.utils.DialogOrderGoToMap;
-import com.example.bonvoath.tms.utils.OrderMapInfoDetail;
+import com.example.bonvoath.tms.utils.MapInfoDialogFragment;
 import com.example.bonvoath.tms.utils.OrderPresenter;
 import com.example.bonvoath.tms.utils.TMSLib;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -67,7 +67,8 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         OnMapReadyCallback,
-        GoogleMap.OnMarkerClickListener{
+        GoogleMap.OnMarkerClickListener,
+        MapInfoDialogFragment.OnMapInfoDialogFragmentListener {
     Toolbar toolbar;
     FusedLocationProviderClient mFusedLocationProviderClient;
     GoogleMap mMap;
@@ -137,16 +138,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public boolean onQueryTextChange(String newText) {
                 mMap.clear();
-                /*
-                for(OrderMaster order: DataSet.OrderMasters){
-                    if(order.getRemark() != null && !order.getRemark().equals("")) {
-                        if(order.getRemark().toLowerCase().contains(newText.toLowerCase())) {
-                            LatLng latLng = new LatLng(order.getLat(), order.getLng());
-                            addMarker(order, latLng);
-                        }
-                    }
-                }
-                */
+
                 return false;
             }
         });
@@ -156,7 +148,7 @@ public class MainActivity extends AppCompatActivity
             public boolean onClose() {
                 toolbar.setNavigationIcon(R.drawable.ic_dehaze_white_24dp);
                 mMap.clear();
-
+                orderData();
                 return false;
             }
         });
@@ -178,7 +170,7 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(getApplicationContext(), MapActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_orders) {
-            Intent intent = new Intent(getApplicationContext(), OrderActivity.class);
+            Intent intent = new Intent(getApplicationContext(), CreateOrderActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_slideshow) {
 
@@ -211,10 +203,11 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        OrderMapInfoDetail dialog = new OrderMapInfoDetail();
-        dialog.setData((OrderMaster)marker.getTag());
-        dialog.setCancelable(false);
-        dialog.show(getSupportFragmentManager(), getClass().getName());
+        MapInfoDialogFragment dialogFragment = MapInfoDialogFragment.instance(getClass().getName());
+        dialogFragment.setData((OrderMaster)marker.getTag());
+        dialogFragment.setOnMapInfoDialogFragmentListener(this);
+        dialogFragment.show(getFragmentManager(), getClass().getName());
+
         return true;
     }
 
@@ -325,11 +318,18 @@ public class MainActivity extends AppCompatActivity
             public boolean onPopupItemClicked(Editable editable, OrderSearch item) {
                 editable.clear();
                 editable.append(item.getTag());
+
                 mMap.clear();
+                /*
                 DialogOrderGoToMap dialogOrderGoToMap = new DialogOrderGoToMap();
                 dialogOrderGoToMap.setData(getApplicationContext(), item.getOrders(), mSharedPreferences.getString("TruckNumber", ""));
                 dialogOrderGoToMap.setCancelable(false);
                 dialogOrderGoToMap.show(getSupportFragmentManager(), getClass().getName());
+                */
+                for(OrderMaster order: item.getOrders()){
+                    LatLng latLng = new LatLng(order.getLat(),order.getLat());
+                    addMarker(order, latLng);
+                }
 
                 return true;
             }
@@ -348,4 +348,14 @@ public class MainActivity extends AppCompatActivity
     }
 
     SearchView searchView;
+
+    @Override
+    public void onClick(View sender) {
+        int id = sender.getId();
+        if(id == R.id.btn_message){
+            startActivity(new Intent(this, OrderCommentActivity.class));
+        }else if(id == R.id.btn_pay){
+            startActivity(new Intent(this, OrderPayActivity.class));
+        }
+    }
 }

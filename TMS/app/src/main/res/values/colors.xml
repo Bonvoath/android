@@ -7,4 +7,6 @@
     <color name="colorWhite">#fff</color>
     <color name="colorLightGray">#F2F2F2</color>
     <color name="colorGray">#f2f2f2</color>
+    <color name="colorSuccess">#29a329</color>
+    <color name="green_1">#196619</color>
 </resources>

@@ -47,11 +47,14 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".OrderActivity"
             android:label="@string/title_activity_order"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme" />
+        <activity android:name=".OrderCommentActivity" />
+        <activity android:name=".OrderPayActivity" />
+        <activity android:name=".CreateOrderActivity"></activity>
     </application>
 
 </manifest>

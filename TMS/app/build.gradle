@@ -39,9 +39,10 @@ dependencies {
     implementation 'com.mcxiaoke.volley:library:1.0.19'
     implementation 'com.google.maps.android:android-maps-utils:0.5+'
     implementation 'com.otaliastudios:autocomplete:1.1.0'
-    implementation 'com.squareup.picasso:picasso:2.3.2'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'com.nineoldandroids:library:2.4.0'
     implementation 'com.daimajia.slider:library:1.1.5@aar'
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
 }
 
 

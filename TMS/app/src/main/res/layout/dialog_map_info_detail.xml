@@ -7,6 +7,7 @@
     <RelativeLayout
         android:id="@+id/col_1"
         android:layout_width="match_parent"
+        android:padding="10dp"
         android:layout_height="wrap_content">
         <TextView
             android:layout_width="wrap_content"
@@ -41,6 +42,7 @@
             android:layout_height="200dp"/>
     </RelativeLayout>
     <LinearLayout
+        android:id="@+id/row2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -49,8 +51,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
             android:orientation="horizontal">
-
             <TextView
                 android:layout_width="110dp"
                 android:layout_height="wrap_content"
@@ -65,6 +67,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
             android:orientation="horizontal">
 
             <TextView
@@ -81,6 +84,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
             android:orientation="horizontal">
             <TextView
                 android:layout_width="110dp"
@@ -96,6 +100,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
             android:orientation="horizontal">
             <TextView
                 android:layout_width="110dp"
@@ -108,5 +113,33 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginLeft="5dp"/>
         </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_below="@+id/row2"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:padding="15dp">
+        <Button
+            android:id="@+id/btn_message"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:text="@string/comments"
+            android:layout_gravity="start"
+            android:background="@drawable/btn_success"
+            android:layout_weight="1"
+            android:textColor="@color/colorWhite"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_margin="2dp" />
+        <Button
+            android:id="@+id/btn_pay"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:text="@string/pay"
+            android:layout_gravity="end"
+            android:background="@drawable/btn_success"
+            android:layout_weight="1"
+            android:textColor="@color/colorWhite"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_margin="2dp" />
     </LinearLayout>
 </RelativeLayout>
