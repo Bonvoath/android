@@ -42,4 +42,6 @@
     <string name="pay">Pay</string>
     <string name="comments">Comments</string>
     <string name="create_new_order">Create new order</string>
+    <string name="button_save_order">button save order</string>
+    <string name="google_search_result">Google search result</string>
 </resources>

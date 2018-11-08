@@ -20,7 +20,7 @@
             <solid android:color="@color/colorWhite"/>
             <stroke android:color="#ddd" android:width="1px"/>
             <corners android:radius="3px"/>
-            <padding android:bottom="10px" android:left="15px" android:right="15px" android:top="10px"/>
+            <padding android:bottom="15px" android:left="15px" android:right="15px" android:top="15px"/>
         </shape>
     </item>
 </selector>

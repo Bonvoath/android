@@ -7,4 +7,7 @@
     <string name="order_get_by_tag">api/v1/order/GetByTag</string>
     <string name="assign_order_truck">api/v1/truck/assign</string>
     <string name="get_order_image_by_order_number">api/v1/order/image</string>
+    <string name="get_order_number">api/v1/order/number</string>
+    <string name="get_google_search_address">api/v1/google/search/address</string>
+    <string name="save_order">api/v1/order/create</string>
 </resources>

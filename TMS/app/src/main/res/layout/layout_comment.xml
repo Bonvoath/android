@@ -13,7 +13,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginStart="10dp"
         app:civ_border_width="0.5dp"
-        android:src="@drawable/bigbang"/>
+        android:src="@drawable/bird"/>
     <RelativeLayout
         android:id="@+id/panel_box_1"
         android:layout_width="match_parent"

@@ -34,7 +34,6 @@ import com.android.volley.toolbox.Volley;
 import com.example.bonvoath.tms.Entities.DataSet;
 import com.example.bonvoath.tms.Entities.OrderMaster;
 import com.example.bonvoath.tms.Entities.OrderSearch;
-import com.example.bonvoath.tms.utils.DialogOrderGoToMap;
 import com.example.bonvoath.tms.utils.MapInfoDialogFragment;
 import com.example.bonvoath.tms.utils.OrderPresenter;
 import com.example.bonvoath.tms.utils.TMSLib;

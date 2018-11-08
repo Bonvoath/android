@@ -10,16 +10,18 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@drawable/shape_border_bottom_background_white"
         app:popupTheme="@style/AppTheme.PopupOverlay">
-        <ImageView
+        <ImageButton
+            android:id="@+id/btnsave"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginRight="15dp"
             android:layout_marginEnd="15dp"
             android:layout_gravity="end"
             android:src="@drawable/ic_check_black_24dp"
-            android:contentDescription="button save order"
+            android:contentDescription="@string/button_save_order"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true" />
+            android:layout_alignParentRight="true"
+            android:background="@drawable/btn_success" />
     </android.support.v7.widget.Toolbar>
     <ScrollView
         android:layout_below="@+id/toolbar"
@@ -42,8 +44,11 @@
                     android:paddingBottom="5dp"
                     android:text="Order no" />
                 <EditText
+                    android:id="@+id/txt_order_no"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:enabled="false"
                     android:background="@drawable/text_bg_white_default_1"/>
             </LinearLayout>
             <LinearLayout
@@ -57,8 +62,10 @@
                     android:paddingBottom="5dp"
                     android:text="Customer name" />
                 <EditText
+                    android:id="@+id/txt_customer_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textSize="14sp"
                     android:background="@drawable/text_bg_white_default_1" />
             </LinearLayout>
             <LinearLayout
@@ -83,6 +90,7 @@
                         android:layout_marginEnd="8dp"
                         android:layout_marginRight="8dp"
                         android:enabled="false"
+                        android:textSize="14sp"
                         android:background="@drawable/text_bg_white_default_1" />
                     <ImageButton
                         android:id="@+id/btnDate"
@@ -114,6 +122,7 @@
                     android:layout_marginEnd="8dp"
                     android:layout_marginRight="8dp"
                     android:enabled="false"
+                    android:textSize="14sp"
                     android:background="@drawable/text_bg_white_default_1" />
 
                     <ImageButton
@@ -135,8 +144,10 @@
                     android:paddingBottom="5dp"
                     android:text="Price" />
                 <EditText
+                    android:id="@+id/txt_price"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textSize="14sp"
                     android:background="@drawable/text_bg_white_default_1" />
             </LinearLayout>
             <LinearLayout
@@ -155,8 +166,10 @@
                         android:paddingBottom="5dp"
                         android:text="Delivery address" />
                     <EditText
+                        android:id="@+id/txt_delivery_address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textSize="14sp"
                         android:background="@drawable/text_bg_white_default_1" />
                 </LinearLayout>
             </LinearLayout>
@@ -175,20 +188,24 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal" >
                     <EditText
+                        android:id="@+id/txt_area1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_marginRight="5dp"
                         android:layout_marginEnd="5dp"
                         android:enabled="false"
+                        android:textSize="14sp"
                         android:background="@drawable/text_bg_white_default_1" />
                     <EditText
+                        android:id="@+id/txt_area2"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_marginStart="5dp"
                         android:layout_marginLeft="5dp"
                         android:enabled="false"
+                        android:textSize="14sp"
                         android:background="@drawable/text_bg_white_default_1" />
                 </LinearLayout>
             </LinearLayout>
@@ -207,20 +224,24 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal" >
                     <EditText
+                        android:id="@+id/txt_locality"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_marginRight="5dp"
                         android:layout_marginEnd="5dp"
                         android:enabled="false"
+                        android:textSize="14sp"
                         android:background="@drawable/text_bg_white_default_1" />
                     <EditText
+                        android:id="@+id/txt_sub_locality"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_marginStart="5dp"
                         android:layout_marginLeft="5dp"
                         android:enabled="false"
+                        android:textSize="14sp"
                         android:background="@drawable/text_bg_white_default_1" />
                 </LinearLayout>
             </LinearLayout>
@@ -239,20 +260,24 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal" >
                     <EditText
+                        android:id="@+id/txt_lat"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_marginRight="5dp"
                         android:layout_marginEnd="5dp"
                         android:enabled="false"
+                        android:textSize="14sp"
                         android:background="@drawable/text_bg_white_default_1" />
                     <EditText
+                        android:id="@+id/txt_long"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_marginStart="5dp"
                         android:layout_marginLeft="5dp"
                         android:enabled="false"
+                        android:textSize="14sp"
                         android:background="@drawable/text_bg_white_default_1" />
                 </LinearLayout>
             </LinearLayout>
@@ -267,9 +292,11 @@
                     android:paddingBottom="5dp"
                     android:text="Country" />
                 <EditText
+                    android:id="@+id/txt_country"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:enabled="false"
+                    android:textSize="14sp"
                     android:background="@drawable/text_bg_white_default_1" />
             </LinearLayout>
             <LinearLayout
@@ -283,8 +310,10 @@
                     android:paddingBottom="5dp"
                     android:text="Remark" />
                 <EditText
+                    android:id="@+id/txt_remark"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textSize="14sp"
                     android:background="@drawable/text_bg_white_default_1" />
             </LinearLayout>
         </LinearLayout>
