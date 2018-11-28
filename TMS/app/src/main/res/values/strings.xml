@@ -44,4 +44,8 @@
     <string name="create_new_order">Create new order</string>
     <string name="button_save_order">button save order</string>
     <string name="google_search_result">Google search result</string>
+
+    <string name="facebook_app_id">2220687764883195</string>
+    <string name="fb_login_protocol_scheme">fb2220687764883195</string>
+
 </resources>

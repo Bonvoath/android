@@ -37,6 +37,15 @@ import com.example.bonvoath.tms.Entities.OrderSearch;
 import com.example.bonvoath.tms.utils.MapInfoDialogFragment;
 import com.example.bonvoath.tms.utils.OrderPresenter;
 import com.example.bonvoath.tms.utils.TMSLib;
+import com.facebook.AccessToken;
+import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.Profile;
+import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -67,6 +76,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         OnMapReadyCallback,
         GoogleMap.OnMarkerClickListener,
+        ActivityCompat.OnRequestPermissionsResultCallback,
         MapInfoDialogFragment.OnMapInfoDialogFragmentListener {
     Toolbar toolbar;
     FusedLocationProviderClient mFusedLocationProviderClient;
@@ -74,6 +84,7 @@ public class MainActivity extends AppCompatActivity
     SharedPreferences mSharedPreferences;
 
     private static final float DEFAULT_ZOOM = 10f;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,8 +188,10 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_share) {
 
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.nav_log_out) {
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(intent);
+            finish();
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -190,13 +203,25 @@ public class MainActivity extends AppCompatActivity
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setOnMarkerClickListener(this);
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        enableMyLocation();
+    }
+
+    private void enableMyLocation() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
+        } else if (mMap != null) {
+            mMap.setMyLocationEnabled(true);
+            orderData();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode != LOCATION_PERMISSION_REQUEST_CODE) {
             return;
         }
-        getDeviceLocation();
-        mMap.setMyLocationEnabled(true);
+
         orderData();
     }
 
@@ -221,8 +246,11 @@ public class MainActivity extends AppCompatActivity
             mapFragment.getMapAsync(this);
     }
 
-    private void getDeviceLocation() {
-        try {
+    private void getDeviceLocation()
+    {
+        try
+        {
+            FusedLocationProviderClient mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
             Task<Location> request = mFusedLocationProviderClient.getLastLocation();
             request.addOnSuccessListener(MainActivity.this, new OnSuccessListener<Location>() {
                 @Override
@@ -230,18 +258,22 @@ public class MainActivity extends AppCompatActivity
                     if(location != null)
                     {
                         onLocationChanged(location);
+                    }else{
+                        Toast.makeText(MainActivity.this, "Empty", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
 
-            request.addOnFailureListener(MainActivity.this, new OnFailureListener() {
+            request.addOnFailureListener(this, new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(MainActivity.this, "Fail:"+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, e.getStackTrace()+e.getMessage(), Toast.LENGTH_LONG).show();
                 }
             });
-        } catch (SecurityException e) {
-            Log.e("Map Context", e.getMessage());
+        }
+        catch (SecurityException e)
+        {
+            //Log.d("MainActivity", e.getMessage());
         }
     }
 
@@ -295,6 +327,16 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void initializeComponent(){
+        String provider = mSharedPreferences.getString("Provider", "");
+        if(provider.equals("Facebook")) {
+            FacebookSdk.sdkInitialize(getApplicationContext());
+            AppEventsLogger.activateApp(this);
+            get_facebook_email();
+            //Profile profile = Profile.getCurrentProfile();
+            //Toast.makeText(getApplication(), profile.getName(), Toast.LENGTH_LONG).show();
+        }else if(provider.equals("Google")){
+            get_google_info();
+        }
     }
     private void addMarker(OrderMaster data, LatLng latLng){
         MarkerOptions options = new MarkerOptions();
@@ -355,6 +397,32 @@ public class MainActivity extends AppCompatActivity
             startActivity(new Intent(this, OrderCommentActivity.class));
         }else if(id == R.id.btn_pay){
             startActivity(new Intent(this, OrderPayActivity.class));
+        }
+    }
+
+    private void get_facebook_email(){
+        GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+            @Override
+            public void onCompleted(JSONObject object, GraphResponse response) {
+                Toast.makeText(getApplication(), object.toString(), Toast.LENGTH_LONG).show();
+                //try{
+                    //String email = object.getString("email");
+                    //Toast.makeText(getApplication(), object.toString(), Toast.LENGTH_LONG).show();
+                //}catch (JSONException e){
+                    //Toast.makeText(getApplication(), e.toString(), Toast.LENGTH_LONG).show();
+                //}
+            }
+        });
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "id,first_name,last_name,email,gender,birthday");
+        request.setParameters(parameters);
+        request.executeAsync();
+    }
+
+    private void get_google_info(){
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        if(account != null){
+            Toast.makeText(getApplication(), account.getEmail() + " : " + account.getDisplayName(), Toast.LENGTH_LONG).show();
         }
     }
 }
