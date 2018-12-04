@@ -24,6 +24,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -82,9 +83,12 @@ public class MainActivity extends AppCompatActivity
     FusedLocationProviderClient mFusedLocationProviderClient;
     GoogleMap mMap;
     SharedPreferences mSharedPreferences;
+    MapInfoDialogFragment dialogFragment;
 
     private static final float DEFAULT_ZOOM = 10f;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    String key ;
+    OrderMaster orderMaster;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,11 +110,16 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        View headerView = navigationView.getHeaderView(0);
+        ((TextView)headerView.findViewById(R.id.txt_user_login_name))
+                .setText(mSharedPreferences.getString("UserName", ""));
+        ((TextView)headerView.findViewById(R.id.txt_login_truck_number)).setText(key);
         initGoogleMap();
     }
 
@@ -203,6 +212,7 @@ public class MainActivity extends AppCompatActivity
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setOnMarkerClickListener(this);
+        getDeviceLocation();
         enableMyLocation();
     }
 
@@ -217,7 +227,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         if (requestCode != LOCATION_PERMISSION_REQUEST_CODE) {
             return;
         }
@@ -227,8 +238,9 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        MapInfoDialogFragment dialogFragment = MapInfoDialogFragment.instance(getClass().getName());
-        dialogFragment.setData((OrderMaster)marker.getTag());
+        orderMaster = (OrderMaster)marker.getTag();
+        dialogFragment = MapInfoDialogFragment.instance(getClass().getName());
+        dialogFragment.setData(orderMaster);
         dialogFragment.setOnMapInfoDialogFragmentListener(this);
         dialogFragment.show(getFragmentManager(), getClass().getName());
 
@@ -267,13 +279,13 @@ public class MainActivity extends AppCompatActivity
             request.addOnFailureListener(this, new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(MainActivity.this, e.getStackTrace()+e.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
                 }
             });
         }
         catch (SecurityException e)
         {
-            //Log.d("MainActivity", e.getMessage());
+            Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -281,62 +293,15 @@ public class MainActivity extends AppCompatActivity
     {
         DataSet.OrderMasters = new ArrayList<>();
         String url = TMSLib.getUrl(this, R.string.order_get_by_truck);
-        String key = mSharedPreferences.getString("TruckNumber", "");
         Map<String, Object> params = new HashMap<>();
         params.put("TruckNum", key);
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(params), new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try
-                {
-                    boolean isError = response.getBoolean("IsError");
-                    if(!isError){
-                        JSONArray data = response.getJSONArray("Data");
-                        for(int i=0;i<data.length(); i++){
-                            JSONObject obj = (JSONObject) data.get(i);
-                            double lat = obj.getDouble("Lat");
-                            double lng = obj.getDouble("Long");
-                            String name = obj.getString("Name");
-                            String price = obj.getString("Price");
-                            LatLng latLng = new LatLng(lat, lng);
-                            String num = obj.getString("OrderNum");
-                            String date = obj.getString("OrderDate");
-                            String address = obj.getString("Address");
-                            String remark =(obj.isNull("Remark")?"":obj.getString("Remark"));
-                            OrderMaster order = new OrderMaster(num, date, address);
-                            order.setLat(lat);
-                            order.setName(name);
-                            order.setLong(lng);
-                            order.setRemark(remark);
-                            order.setPrice(price);
-                            addMarker(order, latLng);
-                        }
-                    }
-                }catch (JSONException e){
-                    Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(MainActivity.this, error.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
-
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url,
+                new JSONObject(params), getOrderCallback, getOrderErrorCallback);
         Volley.newRequestQueue(this).add(request);
     }
 
     private void initializeComponent(){
-        String provider = mSharedPreferences.getString("Provider", "");
-        if(provider.equals("Facebook")) {
-            FacebookSdk.sdkInitialize(getApplicationContext());
-            AppEventsLogger.activateApp(this);
-            get_facebook_email();
-            //Profile profile = Profile.getCurrentProfile();
-            //Toast.makeText(getApplication(), profile.getName(), Toast.LENGTH_LONG).show();
-        }else if(provider.equals("Google")){
-            get_google_info();
-        }
+        key = mSharedPreferences.getString("TruckNumber", "");
     }
     private void addMarker(OrderMaster data, LatLng latLng){
         MarkerOptions options = new MarkerOptions();
@@ -396,33 +361,57 @@ public class MainActivity extends AppCompatActivity
         if(id == R.id.btn_message){
             startActivity(new Intent(this, OrderCommentActivity.class));
         }else if(id == R.id.btn_pay){
-            startActivity(new Intent(this, OrderPayActivity.class));
+            dialogFragment.dismiss();
+            startActivity(new Intent(this, OrderPayActivity.class).putExtra("OrderNum", orderMaster.getOrderNumber()));
         }
     }
 
-    private void get_facebook_email(){
-        GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
-            @Override
-            public void onCompleted(JSONObject object, GraphResponse response) {
-                Toast.makeText(getApplication(), object.toString(), Toast.LENGTH_LONG).show();
-                //try{
-                    //String email = object.getString("email");
-                    //Toast.makeText(getApplication(), object.toString(), Toast.LENGTH_LONG).show();
-                //}catch (JSONException e){
-                    //Toast.makeText(getApplication(), e.toString(), Toast.LENGTH_LONG).show();
-                //}
+    Response.Listener<JSONObject> getOrderCallback = new Response.Listener<JSONObject>(){
+        @Override
+        public void onResponse(JSONObject response) {
+            try
+            {
+                boolean isError = response.getBoolean("IsError");
+                if(!isError){
+                    JSONArray data = response.getJSONArray("Data");
+                    for(int i=0;i<data.length(); i++){
+                        JSONObject obj = (JSONObject) data.get(i);
+                        double lat = obj.getDouble("Lat");
+                        double lng = obj.getDouble("Long");
+                        LatLng latLng = new LatLng(lat, lng);
+                        addMarker(createOrderMaster(obj, latLng), latLng);
+                    }
+                }
+            }catch (JSONException e){
+                Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
             }
-        });
-        Bundle parameters = new Bundle();
-        parameters.putString("fields", "id,first_name,last_name,email,gender,birthday");
-        request.setParameters(parameters);
-        request.executeAsync();
-    }
-
-    private void get_google_info(){
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        if(account != null){
-            Toast.makeText(getApplication(), account.getEmail() + " : " + account.getDisplayName(), Toast.LENGTH_LONG).show();
         }
+    };
+
+    Response.ErrorListener getOrderErrorCallback = new Response.ErrorListener(){
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            Toast.makeText(MainActivity.this, error.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    };
+
+    private OrderMaster createOrderMaster(JSONObject obj, LatLng latLng){
+        OrderMaster order = null;
+        try {
+            String name = obj.getString("Name");
+            String price = obj.getString("Price");
+            String num = obj.getString("OrderNum");
+            String date = obj.getString("OrderDate");
+            String address = obj.getString("Address");
+            String remark = (obj.isNull("Remark") ? "" : obj.getString("Remark"));
+            order = new OrderMaster(num, date, address);
+            order.setLat(latLng.latitude);
+            order.setLong(latLng.longitude);
+            order.setName(name);
+            order.setRemark(remark);
+            order.setPrice(price);
+        }catch (JSONException e){}
+
+        return order;
     }
 }

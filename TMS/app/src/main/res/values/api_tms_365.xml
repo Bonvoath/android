@@ -10,4 +10,5 @@
     <string name="get_order_number">api/v1/order/number</string>
     <string name="get_google_search_address">api/v1/google/search/address</string>
     <string name="save_order">api/v1/order/create</string>
+    <string name="register_new_account">api/v1/register</string>
 </resources>

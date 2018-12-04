@@ -2,8 +2,11 @@ package com.example.bonvoath.tms;
 
 import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
@@ -36,9 +39,11 @@ public class OrderCommentActivity extends AppCompatActivity {
         }
         mSharedPreferences = getApplicationContext().getSharedPreferences("Auth", MODE_PRIVATE);
         truckNumber = mSharedPreferences.getString("TruckNumber", "");
-        final ListView listView = findViewById(R.id.list_comment);
-        mCommentListAdapter= new CommentListAdapter(this, R.layout.layout_comment, commentList);
+        RecyclerView listView = findViewById(R.id.list_comment);
+        mCommentListAdapter= new CommentListAdapter(commentList);
+        listView.setNestedScrollingEnabled(false);
         listView.setAdapter(mCommentListAdapter);
+        listView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
         txtComment = findViewById(R.id.comment);
         Button btnSend = findViewById(R.id.ivPostComment);

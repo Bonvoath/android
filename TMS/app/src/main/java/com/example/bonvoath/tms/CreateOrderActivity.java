@@ -3,6 +3,7 @@ package com.example.bonvoath.tms;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -23,6 +24,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.bonvoath.tms.Entities.DataSet;
 import com.example.bonvoath.tms.Entities.GoogleAddressResult;
+import com.example.bonvoath.tms.utils.LoginHelper;
 import com.example.bonvoath.tms.utils.TMSLib;
 import com.example.bonvoath.tms.utils.swipes.DatePickerDialogFragment;
 import com.example.bonvoath.tms.utils.swipes.GoogleSearchAddressDialogFragment;
@@ -44,6 +46,7 @@ public class CreateOrderActivity extends AppCompatActivity implements View.OnCli
         DatePickerDialog.OnDateSetListener,
         TimePickerDialog.OnTimeSetListener, View.OnFocusChangeListener,
         GoogleSearchAddressDialogFragment.OnGoogleSearchDialogFragmentListener {
+    SharedPreferences mSharedPreferences;
     Toolbar toolbar;
     EditText txtDeliveryDate, txtDeliveryTime, txtOrderNo, txtPrice, txtCustomerName, txtDeliveryAddress,
             txtArea1, txtArea2, txtLocality, txtSubLocality,
@@ -315,35 +318,40 @@ public class CreateOrderActivity extends AppCompatActivity implements View.OnCli
         order.put("Country", country);
         order.put("Lat", lat);
         order.put("Long", lng);
+        order.put("CreatedBy", LoginHelper.getUserId(getApplicationContext()));
 
         List<Object> imageList = new ArrayList<>();
         Map<String, Object> params = new HashMap<>();
         params.put("order", order);
         params.put("images", imageList);
         String url = TMSLib.getUrl(this, R.string.save_order);
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url,new JSONObject(params), new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try
-                {
-                    boolean isError = response.getBoolean("IsError");
-                    if(!isError){
-                        finish();
-                    }
-                    progressDialog.dismiss();
-                }catch (JSONException e){
-                    progressDialog.dismiss();
-                    Toast.makeText(getApplicationContext(), "Response: " + e.toString(), Toast.LENGTH_LONG).show();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
-                Toast.makeText(getApplicationContext(), "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
-
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url,
+                new JSONObject(params), responseCallback, errorCallback);
         Volley.newRequestQueue(this).add(request);
     }
+
+    Response.Listener<JSONObject> responseCallback = new Response.Listener<JSONObject>(){
+        @Override
+        public void onResponse(JSONObject response) {
+            try
+            {
+                boolean isError = response.getBoolean("IsError");
+                if(!isError){
+                    finish();
+                }
+                progressDialog.dismiss();
+            }catch (JSONException e){
+                progressDialog.dismiss();
+                Toast.makeText(getApplicationContext(), "Response: " + e.toString(), Toast.LENGTH_LONG).show();
+            }
+        }
+    };
+
+    Response.ErrorListener errorCallback = new Response.ErrorListener(){
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            progressDialog.dismiss();
+            Toast.makeText(getApplicationContext(), "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    };
 }

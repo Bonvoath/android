@@ -48,4 +48,6 @@
     <string name="facebook_app_id">2220687764883195</string>
     <string name="fb_login_protocol_scheme">fb2220687764883195</string>
 
+    <string name="google_sign_in">Continue with Google</string>
+    <string name="your_rating">Your Rating</string>
 </resources>

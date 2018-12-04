@@ -85,7 +85,7 @@ public class MapInfoDialogFragment extends SwipeAwayDialogFragment implements Vi
         {
             startActivity(new Intent(getActivity(), OrderCommentActivity.class));
         }else {
-            startActivity(new Intent(getActivity(), OrderPayActivity.class));
+            startActivity(new Intent(getActivity(), OrderPayActivity.class).putExtra("OrderNum", mOrder.getOrderNumber()));
         }
 
         return false;
